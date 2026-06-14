@@ -1,15 +1,17 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+import joblib
+import pandas as pd
 
-# 1. Inicialización
+# 1. Inicialización de la API
 app = FastAPI(
     title="API de Predicción de Deserción Estudiantil",
     description="Backend para el Trabajo Práctico Final",
     version="1.0.0"
 )
 
-# 2. Configuración de CORS (IMPORTANTE: va justo después de crear 'app')
+# 2. Configuración de CORS (Permite que Tomás se conecte desde React/Streamlit)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,7 +20,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 3. Definición de Datos
+# 3. Cargar el modelo de Machine Learning en memoria al iniciar el servidor
+try:
+    modelo = joblib.load("models/modelo_estudiantes.pkl")
+    print("--------------------------------------------------")
+    print("¡ÉXITO! Modelo .pkl cargado correctamente en memoria.")
+    print("--------------------------------------------------")
+except Exception as e:
+    modelo = None
+    print("--------------------------------------------------")
+    print(f"ERROR CRÍTICO al cargar el modelo: {e}")
+    print("--------------------------------------------------")
+
+# 4. Esquema de Datos de Entrada (Contrato con el Frontend)
 class StudentData(BaseModel):
     Marital_status: int = Field(..., description="Estado civil del estudiante")
     Course: int = Field(..., description="Código numérico del curso/carrera")
@@ -32,20 +46,31 @@ class StudentData(BaseModel):
     Curricular_units_2nd_sem_approved: int = Field(..., description="Materias aprobadas en el 2do semestre")
     Curricular_units_2nd_sem_grade: float = Field(..., description="Nota promedio del 2do semestre")
 
-# 4. Rutas
+# 5. Rutas de la API
 @app.get("/")
 def read_root():
-    return {"message": "El servidor de la API está corriendo correctamente con CORS habilitado."}
+    return {"message": "El servidor de la API está corriendo correctamente con el modelo listo."}
 
 @app.post("/predict")
 def predict_dropout(student: StudentData):
-    if student.Tuition_fees_up_to_date == 0 or student.Debtor == 1:
-        prediction_simulada = "Dropout"
-    else:
-        prediction_simulada = "Graduate"
+    # Verificamos que el modelo esté cargado en memoria antes de predecir
+    if modelo is None:
+        raise HTTPException(status_code=500, detail="El modelo de Machine Learning no está disponible en el servidor.")
 
-    return {
-        "status": "success",
-        "prediction": prediction_simulada,
-        "message": "Predicción simulada correctamente."
-    }
+    try:
+        # A. Transformar los datos del JSON (objeto Pydantic) a un DataFrame de Pandas de 1 fila
+        datos_diccionario = student.model_dump() 
+        df_entrada = pd.DataFrame([datos_diccionario])
+
+        # B. Ejecutar la predicción con Scikit-Learn
+        prediccion_array = modelo.predict(df_entrada)
+        resultado_final = prediccion_array[0] # Extrae el string resultado (ej. "Graduate" o "Dropout")
+
+        return {
+            "status": "success",
+            "prediction": resultado_final,
+            "message": "Predicción calculada exitosamente a través del modelo matemático."
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error en el procesamiento de datos: {str(e)}")

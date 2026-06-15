@@ -58,13 +58,21 @@ def predict_dropout(student: StudentData):
         raise HTTPException(status_code=500, detail="El modelo de Machine Learning no está disponible en el servidor.")
 
     try:
-        # A. Transformar los datos del JSON (objeto Pydantic) a un DataFrame de Pandas de 1 fila
+        # A. Transformar los datos del JSON a un DataFrame de Pandas
         datos_diccionario = student.model_dump() 
         df_entrada = pd.DataFrame([datos_diccionario])
 
         # B. Ejecutar la predicción con Scikit-Learn
         prediccion_array = modelo.predict(df_entrada)
-        resultado_final = prediccion_array[0] # Extrae el string resultado (ej. "Graduate" o "Dropout")
+        prediccion_numerica = int(prediccion_array[0]) # Extraemos el número (0 o 1)
+
+        # C. El Mapeo (La corrección de Facundo)
+        if prediccion_numerica == 1:
+            resultado_final = "Dropout"
+        elif prediccion_numerica == 0:
+            resultado_final = "Graduate"
+        else:
+            resultado_final = "Desconocido" # Por seguridad, por si llega otro valor
 
         return {
             "status": "success",

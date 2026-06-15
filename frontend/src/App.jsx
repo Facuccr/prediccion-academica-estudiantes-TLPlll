@@ -23,7 +23,6 @@ function App() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Mantenemos el Number() para que React siga enviando números a la API
     setFormData({
       ...formData,
       [name]: Number(value),
@@ -40,13 +39,14 @@ function App() {
         "http://127.0.0.1:8000/predict",
         formData,
       );
-      const prediccionMatematica = response.data.prediction;
 
-      if (prediccionMatematica === 0) {
-        setResultado("Probable Graduación (Graduate) 🎓");
+      const resultadoTexto = response.data.prediction;
+
+      if (resultadoTexto === "Graduate") {
+        setResultado("Probable Graduación (Graduate) ");
         setEsRiesgo(false);
       } else {
-        setResultado("Riesgo de Deserción (Dropout) 🚨");
+        setResultado("Riesgo de Deserción (Dropout) ");
         setEsRiesgo(true);
       }
     } catch (err) {

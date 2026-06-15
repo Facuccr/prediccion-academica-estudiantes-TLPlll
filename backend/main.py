@@ -64,7 +64,7 @@ def predict_dropout(student: StudentData):
 
         # B. Ejecutar la predicción con Scikit-Learn
         prediccion_array = modelo.predict(df_entrada)
-        resultado_final = prediccion_array[0] # Extrae el string resultado (ej. "Graduate" o "Dropout")
+        resultado_final = prediccion_array[0].item() # Extrae el string resultado (ej. "Graduate" o "Dropout")
 
         return {
             "status": "success",

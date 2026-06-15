@@ -21,7 +21,7 @@ app.add_middleware(
 
 #Cargamos el modelo de Machine Learning en memoria al iniciar el servidor
 try:
-    modelo = joblib.load("../models/modelo_estudiantes.pkl")
+    modelo = joblib.load("models/modelo_estudiantes.pkl")
     print("Sistema: Modelo .pkl cargado correctamente en memoria.")
 
 except Exception as e:

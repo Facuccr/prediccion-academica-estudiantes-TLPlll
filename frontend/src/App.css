@@ -1,0 +1,330 @@
+/* ============================================
+   Tipografía
+   ============================================ */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+:root {
+  --ink: #20283d;
+  --ink-soft: #4a5570;
+  --paper: #f6f3ec;
+  --surface: #ffffff;
+  --line: #e2dccc;
+
+  --amber: #c97f35;
+  --amber-soft: #f6e6d2;
+
+  --risk: #ad453d;
+  --risk-soft: #f6e1de;
+
+  --success: #4d7a52;
+  --success-soft: #e2ecde;
+
+  --focus: #3a5a8c;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+/* ============================================
+   Reseteo básico y fondo
+   ============================================ */
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image: radial-gradient(
+    circle,
+    rgba(32, 40, 61, 0.06) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+/* ============================================
+   Contenedor principal
+   ============================================ */
+.dashboard {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px 40px;
+}
+
+/* ============================================
+   Encabezado
+   ============================================ */
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 28px 24px;
+  background-color: var(--ink);
+  border-radius: 12px;
+  position: relative;
+}
+
+.header::before {
+  content: "PREDICCIÓN DE RIESGO · MODELO ACADÉMICO";
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--amber);
+  margin-bottom: 10px;
+}
+
+.header h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fdfcf9;
+  margin: 0 0 6px 0;
+  font-size: 1.7rem;
+  letter-spacing: -0.01em;
+}
+
+.header p {
+  color: #b9bfd1;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ============================================
+   Tarjetas de formulario
+   ============================================ */
+.form-container {
+  counter-reset: section;
+}
+
+.form-section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 22px 25px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(32, 40, 61, 0.04);
+}
+
+.form-section h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--ink);
+  margin-top: 0;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  letter-spacing: -0.01em;
+}
+
+/* Numeración como dato real: el orden en que se completa el expediente */
+.form-section h2::before {
+  counter-increment: section;
+  content: "0" counter(section);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--amber);
+  border: 1px solid var(--amber-soft);
+  background: var(--amber-soft);
+  border-radius: 4px;
+  padding: 2px 6px;
+  letter-spacing: 0.05em;
+}
+
+/* Sección financiera destacada */
+.highlight-section {
+  border-color: var(--amber-soft);
+  background-color: #fffdf9;
+}
+
+.highlight-section h2::before {
+  color: var(--ink);
+  background: var(--amber);
+  border-color: var(--amber);
+}
+
+/* ============================================
+   Grillas
+   ============================================ */
+.grid-2-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.grid-3-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+/* ============================================
+   Inputs y labels
+   ============================================ */
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.input-group input,
+.input-group select {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  color: var(--ink);
+  background-color: var(--surface);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.input-group select {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px rgba(58, 90, 140, 0.15);
+}
+
+.input-group input:focus-visible,
+.input-group select:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* ============================================
+   Botón principal
+   ============================================ */
+.btn-submit {
+  width: 100%;
+  padding: 15px;
+  background-color: var(--ink);
+  color: #fdfcf9;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.05s ease;
+}
+
+.btn-submit:hover {
+  background-color: #2c3653;
+}
+
+.btn-submit:active {
+  transform: translateY(1px);
+}
+
+.btn-submit:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Cajas de resultado
+   ============================================ */
+.result-box {
+  margin-top: 28px;
+  padding: 22px 24px;
+  border-radius: 10px;
+  text-align: left;
+  border-left: 5px solid transparent;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.result-box h2 {
+  margin: 0 0 8px 0;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.result-box p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.success {
+  background-color: var(--success-soft);
+  border-left-color: var(--success);
+  color: #2f4d33;
+}
+
+.success h2 {
+  color: #2f4d33;
+}
+
+.danger {
+  background-color: var(--risk-soft);
+  border-left-color: var(--risk);
+  color: #6f2823;
+}
+
+.danger h2 {
+  color: #6f2823;
+}
+
+.error {
+  background-color: #fdf6f5;
+  border-left-color: var(--risk);
+  color: var(--risk);
+}
+
+/* ============================================
+   Animación
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result-box {
+    animation: none;
+  }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 600px) {
+  .grid-2-cols,
+  .grid-3-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .header h1 {
+    font-size: 1.4rem;
+  }
+}

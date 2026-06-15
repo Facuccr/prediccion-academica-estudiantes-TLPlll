@@ -43,10 +43,10 @@ function App() {
       const resultadoTexto = response.data.prediction;
 
       if (resultadoTexto === "Graduate") {
-        setResultado("Probable Graduación (Graduate) ");
+        setResultado("Probable Graduación (Graduate)");
         setEsRiesgo(false);
       } else {
-        setResultado("Riesgo de Deserción (Dropout) ");
+        setResultado("Riesgo de Deserción (Dropout)");
         setEsRiesgo(true);
       }
     } catch (err) {
@@ -67,7 +67,7 @@ function App() {
       <form onSubmit={handleSubmit} className="form-container">
         {/* SECCIÓN 1: Perfil del Estudiante */}
         <section className="form-section">
-          <h2>👤 Perfil del Estudiante</h2>
+          <h2>Perfil del Estudiante</h2>
           <div className="grid-2-cols">
             <div className="input-group">
               <label>Edad al Inscribirse:</label>
@@ -122,7 +122,7 @@ function App() {
 
         {/* SECCIÓN 2: Situación Financiera */}
         <section className="form-section highlight-section">
-          <h2>💰 Situación Financiera</h2>
+          <h2>Situación Financiera</h2>
           <div className="grid-3-cols">
             {/* Convertido a Select */}
             <div className="input-group">
@@ -167,7 +167,7 @@ function App() {
 
         {/* SECCIÓN 3: Rendimiento Académico (Se mantienen como Inputs) */}
         <section className="form-section">
-          <h2>📚 Rendimiento Académico</h2>
+          <h2>Rendimiento Académico</h2>
           <div className="grid-2-cols">
             <div className="input-group">
               <label>Materias Aprobadas (1er Sem):</label>

@@ -4,14 +4,13 @@ from pydantic import BaseModel, Field
 import joblib
 import pandas as pd
 
-# 1. Inicialización de la API
+# inicializamos la api
 app = FastAPI(
     title="API de Predicción de Deserción Estudiantil",
     description="Backend para el Trabajo Práctico Final",
-    version="1.0.0"
 )
 
-# 2. Configuración de CORS (Permite que Tomás se conecte desde React/Streamlit)
+# config de cors
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,19 +19,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 3. Cargar el modelo de Machine Learning en memoria al iniciar el servidor
+#Cargamos el modelo de Machine Learning en memoria al iniciar el servidor
 try:
-    modelo = joblib.load("models/modelo_estudiantes.pkl")
-    print("--------------------------------------------------")
-    print("¡ÉXITO! Modelo .pkl cargado correctamente en memoria.")
-    print("--------------------------------------------------")
+    modelo = joblib.load("../models/modelo_estudiantes.pkl")
+    print("Sistema: Modelo .pkl cargado correctamente en memoria.")
+
 except Exception as e:
     modelo = None
-    print("--------------------------------------------------")
-    print(f"ERROR CRÍTICO al cargar el modelo: {e}")
-    print("--------------------------------------------------")
+    print(f"Error Critico: Fallo al cargar el modelo predictivo. Detalle: {e}")
 
-# 4. Esquema de Datos de Entrada (Contrato con el Frontend)
+# datos de entrada
 class StudentData(BaseModel):
     Marital_status: int = Field(..., description="Estado civil del estudiante")
     Course: int = Field(..., description="Código numérico del curso/carrera")
@@ -46,38 +42,38 @@ class StudentData(BaseModel):
     Curricular_units_2nd_sem_approved: int = Field(..., description="Materias aprobadas en el 2do semestre")
     Curricular_units_2nd_sem_grade: float = Field(..., description="Nota promedio del 2do semestre")
 
-# 5. Rutas de la API
+# Rutas de la API
 @app.get("/")
 def read_root():
-    return {"message": "El servidor de la API está corriendo correctamente con el modelo listo."}
+    return {"message": "El servidor de la API esta corriendo correctamente con el modelo listo."}
 
 @app.post("/predict")
 def predict_dropout(student: StudentData):
-    # Verificamos que el modelo esté cargado en memoria antes de predecir
+    # verificamos que el modelo este cargado en memoria antes de predecir
     if modelo is None:
-        raise HTTPException(status_code=500, detail="El modelo de Machine Learning no está disponible en el servidor.")
+        raise HTTPException(status_code=500, detail="El modelo de Machine Learning no se encuentra disponible.")
 
     try:
-        # A. Transformar los datos del JSON a un DataFrame de Pandas
+        #Transformamos los datos del json a un df de pandas
         datos_diccionario = student.model_dump() 
         df_entrada = pd.DataFrame([datos_diccionario])
 
-        # B. Ejecutar la predicción con Scikit-Learn
+        #ejecutar la prediccion con Scikit-Learn
         prediccion_array = modelo.predict(df_entrada)
-        prediccion_numerica = int(prediccion_array[0]) # Extraemos el número (0 o 1)
+        prediccion_numerica = int(prediccion_array[0]) # se extrae el 0 o el 1
 
-        # C. El Mapeo (La corrección de Facundo)
+        # mapeo de la prediccion a texto para el cliente
         if prediccion_numerica == 1:
             resultado_final = "Dropout"
         elif prediccion_numerica == 0:
             resultado_final = "Graduate"
         else:
-            resultado_final = "Desconocido" # Por seguridad, por si llega otro valor
+            resultado_final = "Desconocido" 
 
         return {
             "status": "success",
             "prediction": resultado_final,
-            "message": "Predicción calculada exitosamente a través del modelo matemático."
+            "message": "Prediccion calculada exitosamente."
         }
         
     except Exception as e:

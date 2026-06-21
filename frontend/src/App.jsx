@@ -79,13 +79,34 @@ function App() {
               />
             </div>
             <div className="input-group">
-              <label>Código de Carrera:</label>
-              <input
-                type="number"
+              <label>Carrera:</label>
+              <select
                 name="Course"
                 value={formData.Course}
                 onChange={handleChange}
-              />
+              >
+                <option value={33}>
+                  Tecnologías de Producción de Biocombustibles
+                </option>
+                <option value={171}>Diseño de Animación y Multimedia</option>
+                <option value={8014}>Servicio Social</option>
+                <option value={9003}>Agronomía</option>
+                <option value={9070}>Diseño de Comunicación</option>
+                <option value={9085}>Enfermería Veterinaria</option>
+                <option value={9119}>Ingeniería Informática</option>
+                <option value={9130}>Equinocultura</option>
+                <option value={9147}>Gestión / Administración</option>
+                <option value={9238}>Servicio Social (Turno Noche)</option>
+                <option value={9254}>Turismo</option>
+                <option value={9500}>Enfermería</option>
+                <option value={9556}>Higiene Bucal</option>
+                <option value={9670}>Gestión de Publicidad y Marketing</option>
+                <option value={9773}>Periodismo y Comunicación</option>
+                <option value={9853}>Educación Básica</option>
+                <option value={9991}>
+                  Gestión / Administración (Turno Noche)
+                </option>
+              </select>
             </div>
 
             {/* Convertido a Select */}

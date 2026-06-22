@@ -36,7 +36,7 @@ function App() {
 
     try {
       const response = await axios.post(
-        "https://prediccion-academica-estudiantes-tlplll.onrender.com",
+        "https://prediccion-academica-estudiantes-tlplll.onrender.com/predict",
         formData,
       );
 
